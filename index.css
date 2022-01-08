@@ -1,5 +1,5 @@
 .carta {
-  height: 150px;
+  height: 120px;
   width: 100%;
   position: relative;
   transform: scale(1);
@@ -13,7 +13,7 @@
   transform: scale(0.9);
   transition: transform 0.2s;
 }
-.carta.voltear {
+.carta.girar {
   transform: rotateY(180deg);
 }
 

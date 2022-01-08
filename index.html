@@ -11,8 +11,26 @@
     />
     <link rel="stylesheet" href="index.css" />
   </head>
-  <body class="bg-dark bg-gradient">
-    <main id="contenedor-cartas" class="container vh-100">
+  <body class="bg-dark bg-gradient container vh-100">
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <div class="alert alert-primary">
+            <p>Intentos: <strong id="intentos">0</strong></p>
+          </div>
+        </div>
+        <div class="col">
+          <div class="alert alert-primary">
+            <p>
+              Tiempo: <strong id="minutos">0</strong>:<strong id="segundos"
+                >00</strong
+              >
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <main id="contenedor-cartas">
       <div class="row p-1">
         <div
           class="carta m-1 col bg-warning d-flex justify-content-center align-items-center"
@@ -92,6 +110,11 @@
         </div>
       </div>
     </main>
+    <div class="d-grid gap-2">
+      <button type="button" class="btn btn-secondary btn-sm" id="btn-jugar">
+        JUGAR
+      </button>
+    </div>
     <script src="index.js"></script>
   </body>
 </html>
