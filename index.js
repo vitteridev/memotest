@@ -131,12 +131,18 @@ function reiniciarJuego() {
   parejaDeCartasAdivinadas = 0;
   setearTiempoDeJuego();
   setearCartas($cartasFrontal);
+  $contenedorCartas.classList.add("opacar-carta");
+  bloquearClicksJugador($contenedorCartas);
   $cartas.forEach(($carta) => {
     girarCartaAPosicionOriginal($carta);
     $carta.classList.remove("opacar-carta");
     desbloquearClicksJugador($carta);
   });
   $btnJugarDeNuevo.classList.add("btn-display");
+  setTimeout(() => {
+    $contenedorCartas.classList.remove("opacar-carta");
+    desbloquearClicksJugador($contenedorCartas);
+  }, 500);
 }
 
 function jugar() {
