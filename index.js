@@ -104,8 +104,11 @@ function estadoJuego() {
             parejaDeCartasAdivinadas ===
             CONTENIDO_CARTAS_CARA_FRONTAL.length / 2
           ) {
-            alert("ganaste");
             detenerTiempoDeJuego();
+            setTimeout(() => {
+              alert("ganaste");
+              $btnJugarDeNuevo.classList.remove("btn-display");
+            }, 1000);
           }
         } else {
           bloquearClicksJugador($contenedorCartas);
@@ -122,6 +125,20 @@ function estadoJuego() {
   );
 }
 
+function reiniciarJuego() {
+  contadorIntentos = 0;
+  $intentos.innerText = contadorIntentos;
+  parejaDeCartasAdivinadas = 0;
+  setearTiempoDeJuego();
+  setearCartas($cartasFrontal);
+  $cartas.forEach(($carta) => {
+    girarCartaAPosicionOriginal($carta);
+    $carta.classList.remove("opacar-carta");
+    desbloquearClicksJugador($carta);
+  });
+  $btnJugarDeNuevo.classList.add("btn-display");
+}
+
 function jugar() {
   setearCartas($cartasFrontal);
   desbloquearClicksJugador($contenedorCartas);
@@ -133,3 +150,4 @@ function jugar() {
 bloquearClicksJugador($contenedorCartas);
 
 $btnJugar.onclick = jugar;
+$btnJugarDeNuevo.onclick = reiniciarJuego;
