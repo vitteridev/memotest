@@ -75,6 +75,14 @@ function bloquearClicksJugador($elemento) {
   $elemento.classList.add("bloquear-clicks");
 }
 
+function opacarElemento($elemento) {
+  $elemento.classList.add("opacar");
+}
+
+function mostrarElemento($elemento) {
+  $elemento.classList.remove("opacar");
+}
+
 function estadoJuego() {
   $cartas.forEach(($cartaActual) =>
     $cartaActual.addEventListener("click", function () {
@@ -94,8 +102,8 @@ function estadoJuego() {
           bloquearClicksJugador($contenedorCartas);
           setTimeout(() => {
             desbloquearClicksJugador($contenedorCartas);
-            $cartaClickeada.classList.add("opacar-carta");
-            $cartaActual.classList.add("opacar-carta");
+            opacarElemento($cartaClickeada);
+            opacarElemento($cartaActual);
             bloquearClicksJugador($cartaClickeada);
             bloquearClicksJugador($cartaActual);
             $cartaClickeada = null;
@@ -131,16 +139,16 @@ function reiniciarJuego() {
   parejaDeCartasAdivinadas = 0;
   setearTiempoDeJuego();
   setearCartas($cartasFrontal);
-  $contenedorCartas.classList.add("opacar-carta");
+  opacarElemento($contenedorCartas);
   bloquearClicksJugador($contenedorCartas);
   $cartas.forEach(($carta) => {
     girarCartaAPosicionOriginal($carta);
-    $carta.classList.remove("opacar-carta");
+    mostrarElemento($carta);
     desbloquearClicksJugador($carta);
   });
   $btnJugarDeNuevo.classList.add("btn-display");
   setTimeout(() => {
-    $contenedorCartas.classList.remove("opacar-carta");
+    mostrarElemento($contenedorCartas);
     desbloquearClicksJugador($contenedorCartas);
   }, 500);
 }
