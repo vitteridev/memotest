@@ -1,3 +1,7 @@
+.btn-display {
+  display: none;
+}
+
 .carta {
   height: 120px;
   width: 100%;

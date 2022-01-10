@@ -4,10 +4,11 @@ let contadorIntentos = 0;
 let contadorTiempo;
 let parejaDeCartasAdivinadas = 0;
 const $btnJugar = document.querySelector("#btn-jugar");
+const $btnJugarDeNuevo = document.querySelector("#btn-jugar-de-nuevo");
 const $contenedorCartas = document.querySelector("#contenedor-cartas");
 const $cartas = document.querySelectorAll(".carta");
 const $cartasFrontal = document.querySelectorAll(".carta-frontal");
-const CONTENIDOCARTASCARAFRONTAL = [
+const CONTENIDO_CARTAS_CARA_FRONTAL = [
   "⚽",
   "⚾",
   "🥎",
@@ -22,12 +23,8 @@ const CONTENIDOCARTASCARAFRONTAL = [
   "🏈",
 ];
 
-window.onload = () => {
-  bloquearClicksJugador($contenedorCartas);
-};
-
 function setearCartas(cartasParteFrontal) {
-  const contenidoCartasCaraFrontalRandom = CONTENIDOCARTASCARAFRONTAL.sort(
+  const contenidoCartasCaraFrontalRandom = CONTENIDO_CARTAS_CARA_FRONTAL.sort(
     () => 0.5 - Math.random()
   );
 
@@ -53,11 +50,7 @@ function setearTiempoDeJuego() {
       contadorMinutos++;
       $minutos.innerText = contadorMinutos;
     }
-    if (contadorSegundos < 10) {
-      $segundos.innerText = "0" + contadorSegundos;
-    } else {
-      $segundos.innerText = contadorSegundos;
-    }
+    $segundos.innerText = contadorSegundos.toString().padStart(2, "0");
     contadorSegundos++;
   }, 1000);
 }
@@ -74,72 +67,70 @@ function girarCartaAPosicionOriginal(carta) {
   carta.classList.remove("girar");
 }
 
-function prueba(e) {
-  return e.lastElementChild.id;
-}
-
-function desbloquearClicksJugador() {
-  $contenedorCartas.classList.remove("bloquear-clicks");
+function desbloquearClicksJugador($elemento) {
+  $elemento.classList.remove("bloquear-clicks");
 }
 
 function bloquearClicksJugador($elemento) {
   $elemento.classList.add("bloquear-clicks");
 }
 
-$cartas.forEach(($cartaActual) =>
-  $cartaActual.addEventListener("click", function () {
-    girarCarta($cartaActual);
-    if ($cartaClickeada === null) {
-      $cartaClickeada = $cartaActual;
-    } else {
-      if ($cartaClickeada === $cartaActual) {
-        return;
-      }
-
-      if (
-        $cartaClickeada.lastElementChild.id === $cartaActual.lastElementChild.id
-      ) {
-        parejaDeCartasAdivinadas++;
-        bloquearClicksJugador($contenedorCartas);
-        setTimeout(() => {
-          desbloquearClicksJugador($contenedorCartas);
-          $cartaClickeada.classList.add("opacar-carta");
-          $cartaActual.classList.add("opacar-carta");
-          bloquearClicksJugador($cartaClickeada);
-          bloquearClicksJugador($cartaActual);
-          $cartaClickeada = null;
-        }, 1250);
-        if (
-          parejaDeCartasAdivinadas ===
-          CONTENIDOCARTASCARAFRONTAL.length / 2
-        ) {
-          alert("ganaste");
-          detenerTiempoDeJuego();
-        }
+function estadoJuego() {
+  $cartas.forEach(($cartaActual) =>
+    $cartaActual.addEventListener("click", function () {
+      girarCarta($cartaActual);
+      if ($cartaClickeada === null) {
+        $cartaClickeada = $cartaActual;
       } else {
-        bloquearClicksJugador($contenedorCartas);
-        setTimeout(() => {
-          girarCartaAPosicionOriginal($cartaClickeada);
-          girarCartaAPosicionOriginal($cartaActual);
-          setearIntentosDeJuego();
-          $cartaClickeada = null;
-          desbloquearClicksJugador($contenedorCartas);
-        }, 1250);
-      }
-    }
-  })
-);
+        if ($cartaClickeada === $cartaActual) {
+          return;
+        }
 
-/* function reiniciarJuego() {
-  contadorTiempo;
-  contadorIntentos = 0;
-} */
+        if (
+          $cartaClickeada.lastElementChild.id ===
+          $cartaActual.lastElementChild.id
+        ) {
+          parejaDeCartasAdivinadas++;
+          bloquearClicksJugador($contenedorCartas);
+          setTimeout(() => {
+            desbloquearClicksJugador($contenedorCartas);
+            $cartaClickeada.classList.add("opacar-carta");
+            $cartaActual.classList.add("opacar-carta");
+            bloquearClicksJugador($cartaClickeada);
+            bloquearClicksJugador($cartaActual);
+            $cartaClickeada = null;
+          }, 1250);
+          if (
+            parejaDeCartasAdivinadas ===
+            CONTENIDO_CARTAS_CARA_FRONTAL.length / 2
+          ) {
+            alert("ganaste");
+            detenerTiempoDeJuego();
+            $btnJugarDeNuevo.classList.remove("btn-display");
+          }
+        } else {
+          bloquearClicksJugador($contenedorCartas);
+          setTimeout(() => {
+            girarCartaAPosicionOriginal($cartaClickeada);
+            girarCartaAPosicionOriginal($cartaActual);
+            setearIntentosDeJuego();
+            $cartaClickeada = null;
+            desbloquearClicksJugador($contenedorCartas);
+          }, 1250);
+        }
+      }
+    })
+  );
+}
 
 function jugar() {
   setearCartas($cartasFrontal);
   desbloquearClicksJugador($contenedorCartas);
-  bloquearClicksJugador($btnJugar);
+  estadoJuego();
   setearTiempoDeJuego();
+  $btnJugar.style.display = "none";
 }
+
+bloquearClicksJugador($contenedorCartas);
 
 $btnJugar.onclick = jugar;
