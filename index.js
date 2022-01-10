@@ -106,7 +106,6 @@ function estadoJuego() {
           ) {
             alert("ganaste");
             detenerTiempoDeJuego();
-            $btnJugarDeNuevo.classList.remove("btn-display");
           }
         } else {
           bloquearClicksJugador($contenedorCartas);
