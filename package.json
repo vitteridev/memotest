@@ -4,11 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "servidor": "http-server",
+    "cypress:open": "cypress open"
   },
   "author": "Junior Vitteri",
   "license": "ISC",
   "dependencies": {
     "bootstrap": "^5.1.3"
+  },
+  "devDependencies": {
+    "cypress": "^9.2.1"
   }
 }
