@@ -1,5 +1,5 @@
 context("memotest", () => {
-  beforeEach("carga correctamente", () => {
+  before("carga correctamente", () => {
     cy.visit("/");
   });
 
@@ -55,30 +55,26 @@ context("memotest", () => {
     let mapaDePares, listaDePares;
 
     it("elige una combinación errónea", () => {
-      cy.get("#btn-jugar").click();
-
       cy.get(".carta-frontal").then((cartas) => {
         mapaDePares = obtenerParesDeCartas(cartas);
         listaDePares = Object.values(mapaDePares);
 
-        console.log(listaDePares);
-
         cy.get(listaDePares[0][0]).click();
         cy.get(listaDePares[2][0]).click();
-
-        cy.get(".carta").not(".opacar").should("have.length", NUMERO_CARTAS);
       });
+      cy.get(".carta").not(".opacar").should("have.length", NUMERO_CARTAS);
     });
 
     it("completa el juego", () => {
-      cy.get(".carta").not(".opacar").should("have.length", NUMERO_CARTAS);
-      cy.get("#btn-jugar").click();
-
       listaDePares.forEach((par) => {
-        cy.get(par[0]).should("be.visible").wait(1000).click();
-        cy.get(par[1]).should("be.visible").wait(1000).click();
-        cy.wait(4000);
+        cy.get(par[0]).click();
+        cy.get(par[1]).click();
       });
+      cy.get(".carta").not(".opacar").should("have.length", 0);
+      cy.get("#intentos").should("contain.text", "1");
+      cy.get("#segundos").should("not.contain", "00");
+
+      cy.get("#btn-jugar-de-nuevo").should("be.visible");
     });
   });
 });
