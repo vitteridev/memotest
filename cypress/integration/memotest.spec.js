@@ -73,8 +73,26 @@ context("memotest", () => {
       cy.get(".carta").not(".opacar").should("have.length", 0);
       cy.get("#intentos").should("contain.text", "1");
       cy.get("#segundos").should("not.contain", "00");
+    });
+  });
 
+  describe("asegura que el juego reinicie", () => {
+    it("asegura que el boton de reinicio funcione", () => {
       cy.get("#btn-jugar-de-nuevo").should("be.visible");
+      cy.get("#btn-jugar-de-nuevo").click();
+      cy.get("#btn-jugar-de-nuevo").should("not.be.visible");
+    });
+
+    it("aseguro que las cartas esten visibles", () => {
+      cy.get(".carta").not(".opacar").should("have.length", NUMERO_CARTAS);
+    });
+
+    it("aseguro que se reinicie los intentos a 0", () => {
+      cy.get("#intentos").should("contain.text", "0");
+    });
+
+    it("aseguro que se reinicie el contador a 0", () => {
+      cy.get("#segundos").should("contain.text", "0");
     });
   });
 });
